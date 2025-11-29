@@ -149,7 +149,8 @@ build_deepcr() {
     build_package "BB_DeepCosmicRay" "$DEEPCR_DIR" "$version" \
         "BB_DeepCosmicRay.js" \
         "deepcr_cli.py" \
-        "run_deepcr.sh"
+        "run_deepcr.sh" \
+        "Favicon_DeepCR.svg"
 }
 
 # =============================================================================
@@ -173,7 +174,8 @@ build_cosmetic() {
     fi
 
     build_package "BB_CosmeticCorrection" "$COSMETIC_DIR" "$version" \
-        "BB_CosmeticCorrection.js"
+        "BB_CosmeticCorrection.js" \
+        "Favicon_CosmeticCorrection.svg"
 }
 
 # =============================================================================
