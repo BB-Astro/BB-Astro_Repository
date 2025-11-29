@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xri version="1.0">
+
+  <!-- ================================================================== -->
+  <!-- BB-Astro Official PixInsight Repository                           -->
+  <!-- ================================================================== -->
+
+  <description>
+    <p><b>BB-Astro Official Repository</b></p>
+    <p>Professional astronomical image processing tools for PixInsight</p>
+    <p></p>
+    <p><b>Available Modules:</b></p>
+    <p>- LAcosmic: Cosmic ray removal using L.A.Cosmic algorithm</p>
+    <p>- DeepCosmicRay: Deep learning cosmic ray removal (DeepCR)</p>
+    <p>- CosmeticCorrection: Hot/cold pixel removal</p>
+    <p></p>
+    <p><b>Author:</b> Benoit Blanco (BB-Astro)</p>
+    <p><b>Website:</b> <a href="https://www.bb-astro.com">www.bb-astro.com</a></p>
+    <p><b>License:</b> CC BY-NC-SA 4.0</p>
+  </description>
+
+  <!-- ================================================================== -->
+  <!-- BB-Astro LAcosmic v1.0.1 -->
+  <!-- ================================================================== -->
+
+  <platform os="macosx" arch="x64" version="1.8.0:2.0.0">
+    <package fileName="packages/BB_LAcosmic_v1.0.1.tar.gz" sha1="22544e27d5ea9c5629a210bfd6b9ab7fc23b2014" type="script" releaseDate="20251129">
+      <title>BB-Astro LAcosmic v1.0.1</title>
+      <description>
+        <p><b>BB-Astro LAcosmic v1.0.1</b></p>
+        <p>Cosmic ray removal using the L.A.Cosmic algorithm (van Dokkum 2001). Optimized parameters detect +24% more cosmic rays than defaults. Requires Python 3 with astroscrappy.</p>
+      </description>
+    </package>
+  </platform>
+
+  <platform os="linux" arch="x64" version="1.8.0:2.0.0">
+    <package fileName="packages/BB_LAcosmic_v1.0.1.tar.gz" sha1="22544e27d5ea9c5629a210bfd6b9ab7fc23b2014" type="script" releaseDate="20251129">
+      <title>BB-Astro LAcosmic v1.0.1</title>
+      <description>
+        <p><b>BB-Astro LAcosmic v1.0.1</b></p>
+        <p>Cosmic ray removal using the L.A.Cosmic algorithm (van Dokkum 2001). Optimized parameters detect +24% more cosmic rays than defaults. Requires Python 3 with astroscrappy.</p>
+      </description>
+    </package>
+  </platform>
+
+</xri>
