@@ -123,6 +123,7 @@ build_lacosmic() {
         "BB-Astro_LAcosmic.js" \
         "lacosmic_cli.py" \
         "run_lacosmic.sh" \
+        "install.sh" \
         "favicon_LACOSMIC.svg"
 }
 
@@ -150,6 +151,7 @@ build_deepcr() {
         "BB_DeepCosmicRay.js" \
         "deepcr_cli.py" \
         "run_deepcr.sh" \
+        "install.sh" \
         "Favicon_DeepCR.svg"
 }
 
