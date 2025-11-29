@@ -24,7 +24,7 @@
   <!-- ================================================================== -->
 
   <platform os="macosx" arch="x64" version="1.8.0:2.0.0">
-    <package fileName="packages/BB_DeepCosmicRay_v2.1.1.tar.gz" sha1="cf97a3ac031b4ffdba59e94b86e43db4384c886e" type="script" releaseDate="20251129">
+    <package fileName="packages/BB_DeepCosmicRay_v2.1.1.tar.gz" sha1="6be046b737ed1a233556cfdf22a089b63f10285b" type="script" releaseDate="20251129">
       <title>BB-Astro DeepCosmicRay v2.1.1</title>
       <description>
         <p><b>BB-Astro DeepCosmicRay v2.1.1</b></p>
@@ -34,7 +34,7 @@
   </platform>
 
   <platform os="linux" arch="x64" version="1.8.0:2.0.0">
-    <package fileName="packages/BB_DeepCosmicRay_v2.1.1.tar.gz" sha1="cf97a3ac031b4ffdba59e94b86e43db4384c886e" type="script" releaseDate="20251129">
+    <package fileName="packages/BB_DeepCosmicRay_v2.1.1.tar.gz" sha1="6be046b737ed1a233556cfdf22a089b63f10285b" type="script" releaseDate="20251129">
       <title>BB-Astro DeepCosmicRay v2.1.1</title>
       <description>
         <p><b>BB-Astro DeepCosmicRay v2.1.1</b></p>
