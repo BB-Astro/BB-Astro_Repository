@@ -28,7 +28,7 @@ COSMETIC_DIR="$SOURCES_BASE/BB_CosmeticCorrection"
 
 # GitHub Pages base URL (update after creating repo)
 GITHUB_USER="BB-Astro"
-GITHUB_REPO="BB-Astro-Repository"
+GITHUB_REPO="BB-Astro_Repository"
 BASE_URL="https://${GITHUB_USER}.github.io/${GITHUB_REPO}"
 
 # Release date (today)
