@@ -20,35 +20,11 @@
   </description>
 
   <!-- ================================================================== -->
-  <!-- BB-Astro LAcosmic v1.0.1 -->
-  <!-- ================================================================== -->
-
-  <platform os="macosx" arch="x64" version="1.8.0:2.0.0">
-    <package fileName="packages/BB_LAcosmic_v1.0.1.tar.gz" sha1="8a2948ba11d7ca5e398a249f763a217d2b1f6c4e" type="script" releaseDate="20251129">
-      <title>BB-Astro LAcosmic v1.0.1</title>
-      <description>
-        <p><b>BB-Astro LAcosmic v1.0.1</b></p>
-        <p>Cosmic ray removal using the L.A.Cosmic algorithm (van Dokkum 2001). Optimized parameters detect +24% more cosmic rays than defaults. Requires Python 3 with astroscrappy.</p>
-      </description>
-    </package>
-  </platform>
-
-  <platform os="linux" arch="x64" version="1.8.0:2.0.0">
-    <package fileName="packages/BB_LAcosmic_v1.0.1.tar.gz" sha1="8a2948ba11d7ca5e398a249f763a217d2b1f6c4e" type="script" releaseDate="20251129">
-      <title>BB-Astro LAcosmic v1.0.1</title>
-      <description>
-        <p><b>BB-Astro LAcosmic v1.0.1</b></p>
-        <p>Cosmic ray removal using the L.A.Cosmic algorithm (van Dokkum 2001). Optimized parameters detect +24% more cosmic rays than defaults. Requires Python 3 with astroscrappy.</p>
-      </description>
-    </package>
-  </platform>
-
-  <!-- ================================================================== -->
   <!-- BB-Astro DeepCosmicRay v2.1.1 -->
   <!-- ================================================================== -->
 
   <platform os="macosx" arch="x64" version="1.8.0:2.0.0">
-    <package fileName="packages/BB_DeepCosmicRay_v2.1.1.tar.gz" sha1="bfe052f76e1a20c8541ea3079447548d7019f1d7" type="script" releaseDate="20251129">
+    <package fileName="packages/BB_DeepCosmicRay_v2.1.1.tar.gz" sha1="cf97a3ac031b4ffdba59e94b86e43db4384c886e" type="script" releaseDate="20251129">
       <title>BB-Astro DeepCosmicRay v2.1.1</title>
       <description>
         <p><b>BB-Astro DeepCosmicRay v2.1.1</b></p>
@@ -58,35 +34,11 @@
   </platform>
 
   <platform os="linux" arch="x64" version="1.8.0:2.0.0">
-    <package fileName="packages/BB_DeepCosmicRay_v2.1.1.tar.gz" sha1="bfe052f76e1a20c8541ea3079447548d7019f1d7" type="script" releaseDate="20251129">
+    <package fileName="packages/BB_DeepCosmicRay_v2.1.1.tar.gz" sha1="cf97a3ac031b4ffdba59e94b86e43db4384c886e" type="script" releaseDate="20251129">
       <title>BB-Astro DeepCosmicRay v2.1.1</title>
       <description>
         <p><b>BB-Astro DeepCosmicRay v2.1.1</b></p>
         <p>Deep learning cosmic ray removal using DeepCR (Zhang &amp; Bloom 2020). Superior accuracy trained on 15,000+ HST images. Requires Python 3 with DeepCR, PyTorch.</p>
-      </description>
-    </package>
-  </platform>
-
-  <!-- ================================================================== -->
-  <!-- BB-Astro CosmeticCorrection v2.1.0 -->
-  <!-- ================================================================== -->
-
-  <platform os="macosx" arch="x64" version="1.8.0:2.0.0">
-    <package fileName="packages/BB_CosmeticCorrection_v2.1.0.tar.gz" sha1="c07a64cc81bb4218b1f6d14c1983ce9115324cb5" type="script" releaseDate="20251129">
-      <title>BB-Astro CosmeticCorrection v2.1.0</title>
-      <description>
-        <p><b>BB-Astro CosmeticCorrection v2.1.0</b></p>
-        <p>Professional hot and cold pixel removal with visual validation. Easy-to-use interface for cosmetic correction.</p>
-      </description>
-    </package>
-  </platform>
-
-  <platform os="linux" arch="x64" version="1.8.0:2.0.0">
-    <package fileName="packages/BB_CosmeticCorrection_v2.1.0.tar.gz" sha1="c07a64cc81bb4218b1f6d14c1983ce9115324cb5" type="script" releaseDate="20251129">
-      <title>BB-Astro CosmeticCorrection v2.1.0</title>
-      <description>
-        <p><b>BB-Astro CosmeticCorrection v2.1.0</b></p>
-        <p>Professional hot and cold pixel removal with visual validation. Easy-to-use interface for cosmetic correction.</p>
       </description>
     </package>
   </platform>
