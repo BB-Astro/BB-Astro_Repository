@@ -122,7 +122,8 @@ build_lacosmic() {
     build_package "BB_LAcosmic" "$LACOSMIC_DIR" "$version" \
         "BB-Astro_LAcosmic.js" \
         "lacosmic_cli.py" \
-        "run_lacosmic.sh"
+        "run_lacosmic.sh" \
+        "favicon_LACOSMIC.svg"
 }
 
 # =============================================================================
