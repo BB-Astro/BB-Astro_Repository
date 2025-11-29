@@ -2,11 +2,11 @@
 
 Official PixInsight update repository for BB-Astro scripts.
 
-## Available Modules
+## Available Scripts
 
-| Module | Version | Description |
+| Script | Version | Description |
 |--------|---------|-------------|
-| **LAcosmic** | 1.0.1 | Cosmic ray removal (L.A.Cosmic algorithm) |
+| **LAcosmic** | 1.0.1 | Cosmic ray removal using L.A.Cosmic algorithm |
 | **DeepCosmicRay** | 2.1.1 | Deep learning cosmic ray removal (DeepCR) |
 | **CosmeticCorrection** | 2.1.0 | Hot/cold pixel removal |
 
@@ -14,7 +14,7 @@ Official PixInsight update repository for BB-Astro scripts.
 
 ## Installation
 
-### Step 1: Add the Repository in PixInsight
+### Step 1: Add the Repository
 
 1. Open PixInsight
 2. Go to **Resources > Updates > Manage Repositories**
@@ -25,73 +25,40 @@ Official PixInsight update repository for BB-Astro scripts.
    ```
 5. Click **OK**
 
-### Step 2: Install Modules
+### Step 2: Install Scripts
 
 1. Go to **Resources > Updates > Check for Updates**
-2. Select the BB-Astro modules you want
+2. Select the BB-Astro scripts you want
 3. Click **Apply**
 4. Restart PixInsight
 
-### Step 3: Install Python Dependencies
-
-After PixInsight installation, open **Terminal** and run the install script:
-
-**Find where PixInsight installed the scripts:**
-- **macOS:** `/Applications/PixInsight/src/scripts/BB-Astro/`
-- **Linux:** `~/.local/share/PixInsight/src/scripts/BB-Astro/`
-
-**For LAcosmic:**
-```bash
-cd /Applications/PixInsight/src/scripts/BB-Astro
-./install.sh
-```
-
-**For DeepCosmicRay:**
-```bash
-cd /Applications/PixInsight/src/scripts/BB-Astro
-./install.sh
-```
-
-The DeepCosmicRay installer will:
-- Create a Python virtual environment in `~/.bb-astro/deepcr_venv/`
-- Install PyTorch, DeepCR, and dependencies
-- Download model weights (~100 MB)
-
-**For CosmeticCorrection:**
-No installation needed - it's 100% JavaScript!
+Scripts are located in: **Script > BB-Astro**
 
 ---
 
-## After Installation
+## Python Dependencies
 
-Find the scripts in: **Script > BB-Astro**
+**CosmeticCorrection** works immediately - no setup needed.
 
-- LAcosmic
-- DeepCosmicRay
-- CosmeticCorrection
+**LAcosmic** and **DeepCosmicRay** require Python. The scripts will automatically detect if dependencies are missing and show you the exact command to run.
+
+### If prompted for LAcosmic:
+```
+pip3 install astroscrappy astropy numpy
+```
+
+### If prompted for DeepCosmicRay:
+```
+pip3 install deepcr torch xisf numpy astropy
+```
 
 ---
 
 ## Updating
 
-PixInsight will automatically notify you when updates are available.
+PixInsight automatically notifies you when updates are available.
 
-Go to **Resources > Updates > Check for Updates** to manually check.
-
----
-
-## Troubleshooting
-
-### "Python not found"
-Install Python 3.8+:
-- **macOS:** `brew install python3`
-- **Linux:** `sudo apt install python3 python3-venv python3-pip`
-
-### "Module not found" errors
-Run the install.sh script for the module you're using.
-
-### DeepCosmicRay is slow
-First run downloads ~100MB model. Subsequent runs are faster.
+Manual check: **Resources > Updates > Check for Updates**
 
 ---
 
@@ -101,21 +68,6 @@ First run downloads ~100MB model. Subsequent runs are faster.
 
 Website: [www.bb-astro.com](https://www.bb-astro.com)
 
----
-
 ## License
 
-CC BY-NC-SA 4.0 (Attribution, Non-Commercial, ShareAlike)
-
----
-
-## For Developers
-
-### Rebuild packages
-
-```bash
-./tools/build_packages.sh           # Build all
-./tools/build_packages.sh lacosmic  # Build only LAcosmic
-./tools/build_packages.sh deepcr    # Build only DeepCosmicRay
-./tools/build_packages.sh cosmetic  # Build only CosmeticCorrection
-```
+CC BY-NC-SA 4.0
