@@ -62,6 +62,45 @@ Manual check: **Resources > Updates > Check for Updates**
 
 ---
 
+## For Contributors — Building Packages
+
+Packages are built from the source repositories using `tools/build_packages.sh`.
+
+### Configure source paths
+
+The script reads paths from environment variables or a personal config file. Create `~/.bb-astro/build.conf`:
+
+```bash
+mkdir -p ~/.bb-astro
+cat > ~/.bb-astro/build.conf << 'EOF'
+LACOSMIC_DIR="/path/to/BB-Astro_LAcosmic"
+DEEPCR_DIR="/path/to/BB-Astro_DeepCosmicRay"
+COSMETIC_DIR="/path/to/BB_CosmeticCorrection"
+EOF
+```
+
+Or pass paths inline as environment variables:
+
+```bash
+LACOSMIC_DIR=~/dev/BB-Astro_LAcosmic \
+DEEPCR_DIR=~/dev/BB-Astro_DeepCosmicRay \
+COSMETIC_DIR=~/dev/BB_CosmeticCorrection \
+  ./tools/build_packages.sh
+```
+
+### Build all packages
+
+```bash
+./tools/build_packages.sh          # Build all
+./tools/build_packages.sh lacosmic # LAcosmic only
+./tools/build_packages.sh deepcr   # DeepCosmicRay only
+./tools/build_packages.sh cosmetic # CosmeticCorrection only
+```
+
+The script generates `packages/*.tar.gz` and regenerates `updates.xri` automatically.
+
+---
+
 ## Author
 
 **Benoit Blanco (BB-Astro)**
