@@ -70,4 +70,4 @@ Website: [www.bb-astro.com](https://www.bb-astro.com)
 
 ## License
 
-CC BY-NC-SA 4.0
+CC0 1.0 Universal

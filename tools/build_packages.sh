@@ -20,11 +20,20 @@ REPO_DIR="$(dirname "$SCRIPT_DIR")"
 PACKAGES_DIR="$REPO_DIR/packages"
 BUILD_DIR="$REPO_DIR/.build"
 
-# Source directories (adjust paths as needed)
-SOURCES_BASE="/Users/benmbp/Documents/projetMBP/ModulePixinsightByBB"
-LACOSMIC_DIR="$SOURCES_BASE/BB-Astro_LAcosmic-GitHub"
-DEEPCR_DIR="$SOURCES_BASE/BB-Astro_DeepCosmicRay_GitHub"
-COSMETIC_DIR="$SOURCES_BASE/BB_CosmeticCorrection"
+# Source directories — configurable via env vars or a local config file.
+# Create ~/.bb-astro/build.conf with:
+#   LACOSMIC_DIR="/path/to/BB-Astro_LAcosmic"
+#   DEEPCR_DIR="/path/to/BB-Astro_DeepCosmicRay"
+#   COSMETIC_DIR="/path/to/BB_CosmeticCorrection"
+if [[ -f "${HOME}/.bb-astro/build.conf" ]]; then
+    # shellcheck source=/dev/null
+    source "${HOME}/.bb-astro/build.conf"
+fi
+
+SOURCES_BASE="${SOURCES_BASE:-}"
+LACOSMIC_DIR="${LACOSMIC_DIR:-${SOURCES_BASE}/BB-Astro_LAcosmic-GitHub}"
+DEEPCR_DIR="${DEEPCR_DIR:-${SOURCES_BASE}/BB-Astro_DeepCosmicRay_GitHub}"
+COSMETIC_DIR="${COSMETIC_DIR:-${SOURCES_BASE}/BB_CosmeticCorrection}"
 
 # GitHub Pages base URL (update after creating repo)
 GITHUB_USER="BB-Astro"
@@ -205,7 +214,7 @@ generate_updates_xri() {
     <p></p>
     <p><b>Author:</b> Benoit Blanco (BB-Astro)</p>
     <p><b>Website:</b> <a href="https://www.bb-astro.com">www.bb-astro.com</a></p>
-    <p><b>License:</b> CC BY-NC-SA 4.0</p>
+    <p><b>License:</b> CC0 1.0 Universal</p>
   </description>
 
 XMLHEADER
