@@ -40,8 +40,9 @@ GITHUB_USER="BB-Astro"
 GITHUB_REPO="BB-Astro_Repository"
 BASE_URL="https://${GITHUB_USER}.github.io/${GITHUB_REPO}"
 
-# Release date (today)
-RELEASE_DATE=$(date +%Y%m%d)
+# Release dates are derived per package in generate_updates_xri (see
+# get_release_date), not stamped globally, so a partial build cannot restamp
+# packages it did not touch.
 
 # =============================================================================
 # FUNCTIONS
@@ -65,6 +66,62 @@ get_version() {
 # Calculate SHA-1 of a file
 get_sha1() {
     shasum -a 1 "$1" | awk '{print $1}'
+}
+
+# Does an existing archive hold exactly the staged tree?
+# Args: archive_path staged_dir
+package_matches() {
+    local archive="$1"
+    local staged="$2"
+    local tmp
+    tmp=$(mktemp -d) || return 1
+
+    if ! tar -xzf "$archive" -C "$tmp" 2>/dev/null; then
+        rm -rf "$tmp"
+        return 1
+    fi
+
+    local differs=0
+    diff -r "$tmp" "$staged" > /dev/null 2>&1 || differs=1
+
+    # File modes matter too: run_*.sh and install_*.sh must stay executable, and
+    # diff -r does not look at permissions.
+    if [[ $differs -eq 0 ]]; then
+        local f rel old_x new_x
+        while IFS= read -r f; do
+            rel="${f#$tmp/}"
+            if [[ -x "$f" ]]; then old_x=1; else old_x=0; fi
+            if [[ -x "$staged/$rel" ]]; then new_x=1; else new_x=0; fi
+            if [[ $old_x -ne $new_x ]]; then
+                differs=1
+                break
+            fi
+        done < <(find "$tmp" -type f)
+    fi
+
+    rm -rf "$tmp"
+    return $differs
+}
+
+# Release date for a package: the date its archive was committed, so the value
+# survives a fresh clone (git does not restore mtimes). Falls back to the file
+# mtime for archives that are new or modified in the working tree.
+# Args: archive_path
+get_release_date() {
+    local archive="$1"
+    local committed=""
+
+    if git -C "$REPO_DIR" rev-parse --git-dir > /dev/null 2>&1 \
+       && git -C "$REPO_DIR" diff --quiet HEAD -- "$archive" 2>/dev/null; then
+        committed=$(git -C "$REPO_DIR" log -1 --format=%cd \
+            --date=format:%Y%m%d -- "$archive" 2>/dev/null)
+    fi
+
+    if [[ -n "$committed" ]]; then
+        echo "$committed"
+    else
+        date -r "$archive" +%Y%m%d
+    fi
 }
 
 # Build a package
@@ -98,10 +155,23 @@ build_package() {
         fi
     done
 
-    # Create the package (from inside build dir so paths are relative)
-    cd "$build_path"
-    tar -czf "$PACKAGES_DIR/$package_name" .
-    cd "$REPO_DIR"
+    # tar records mtimes and ownership, so rebuilding byte-identical sources
+    # still yields a different archive and therefore a different SHA-1. Since
+    # PixInsight keys packages on the SHA-1 in the manifest, that would push a
+    # pointless redownload of an unchanged version to every user. Compare the
+    # staged tree against the archive already on disk and keep the old one
+    # when nothing actually changed.
+    if [[ -f "$PACKAGES_DIR/$package_name" ]] && \
+       package_matches "$PACKAGES_DIR/$package_name" "$build_path"; then
+        log "  $package_name: contents unchanged, keeping existing archive"
+    else
+        # Create the package (from inside build dir so paths are relative).
+        # COPYFILE_DISABLE keeps macOS tar from adding ._ AppleDouble entries,
+        # which PixInsight would extract as junk files next to the scripts.
+        cd "$build_path"
+        COPYFILE_DISABLE=1 tar -czf "$PACKAGES_DIR/$package_name" .
+        cd "$REPO_DIR"
+    fi
 
     # Calculate SHA-1
     local sha1=$(get_sha1 "$PACKAGES_DIR/$package_name")
@@ -110,9 +180,6 @@ build_package() {
     log "  Package: $package_name"
     log "  SHA-1:   $sha1"
     log "  Size:    $size bytes"
-
-    # Store info for updates.xri generation
-    echo "$name|$version|$package_name|$sha1|$size" >> "$BUILD_DIR/packages.txt"
 }
 
 # =============================================================================
@@ -132,7 +199,7 @@ build_lacosmic() {
         "BB-Astro_LAcosmic.js" \
         "lacosmic_cli.py" \
         "run_lacosmic.sh" \
-        "install.sh" \
+        "install_lacosmic.sh" \
         "favicon_LACOSMIC.svg"
 }
 
@@ -160,7 +227,7 @@ build_deepcr() {
         "BB_DeepCosmicRay.js" \
         "deepcr_cli.py" \
         "run_deepcr.sh" \
-        "install.sh" \
+        "install_deepcr.sh" \
         "Favicon_DeepCR.svg"
 }
 
@@ -192,6 +259,13 @@ build_cosmetic() {
 # =============================================================================
 # GENERATE updates.xri
 # =============================================================================
+# The manifest is rebuilt from whatever is actually in packages/, never from
+# the list of packages built during this run. A partial build (for example
+# "build_packages.sh deepcr") used to regenerate the whole file from a
+# per-run packages.txt, silently dropping the entries of the packages it had
+# not rebuilt; the tarballs stayed published but became invisible to
+# PixInsight. Scanning the directory makes the output independent of the
+# target argument.
 generate_updates_xri() {
     log "Generating updates.xri..."
 
@@ -219,11 +293,35 @@ generate_updates_xri() {
 
 XMLHEADER
 
-    # Generate package entries for each platform
-    # For scripts, we use "noarch" since they work on all platforms
+    # One entry per known package, taking the highest version present in
+    # packages/. Emitted in a fixed order so the file stays diff-friendly.
+    local name package_path package_name version sha1 release_date
+    for name in BB_LAcosmic BB_DeepCosmicRay BB_CosmeticCorrection; do
 
-    while IFS='|' read -r name version package_name sha1 size; do
-        [[ -z "$name" ]] && continue
+        # Highest version on disk for this package, or nothing.
+        package_path=$(ls "$PACKAGES_DIR/${name}_v"*.tar.gz 2>/dev/null \
+            | sort -V | tail -1)
+
+        if [[ -z "$package_path" ]]; then
+            log "  ${name}: no package in packages/, skipped"
+            continue
+        fi
+
+        package_name=$(basename "$package_path")
+        version="${package_name#${name}_v}"
+        version="${version%.tar.gz}"
+        sha1=$(get_sha1 "$package_path")
+        release_date=$(get_release_date "$package_path")
+
+        # Report tarballs of the same package that this manifest no longer
+        # points to, rather than leaving them silently orphaned.
+        local older
+        for older in $(ls "$PACKAGES_DIR/${name}_v"*.tar.gz 2>/dev/null); do
+            [[ "$older" == "$package_path" ]] && continue
+            log "  superseded, safe to delete: $(basename "$older")"
+        done
+
+        log "  ${name} v${version} (${sha1})"
 
         # Get description based on package name
         local title desc
@@ -248,7 +346,7 @@ XMLHEADER
   <!-- ================================================================== -->
 
   <platform os="macosx" arch="x64" version="1.8.0:2.0.0">
-    <package fileName="packages/${package_name}" sha1="${sha1}" type="script" releaseDate="${RELEASE_DATE}">
+    <package fileName="packages/${package_name}" sha1="${sha1}" type="script" releaseDate="${release_date}">
       <title>${title}</title>
       <description>
         <p><b>${title}</b></p>
@@ -258,7 +356,7 @@ XMLHEADER
   </platform>
 
   <platform os="linux" arch="x64" version="1.8.0:2.0.0">
-    <package fileName="packages/${package_name}" sha1="${sha1}" type="script" releaseDate="${RELEASE_DATE}">
+    <package fileName="packages/${package_name}" sha1="${sha1}" type="script" releaseDate="${release_date}">
       <title>${title}</title>
       <description>
         <p><b>${title}</b></p>
@@ -269,7 +367,7 @@ XMLHEADER
 
 XMLPACKAGE
 
-    done < "$BUILD_DIR/packages.txt"
+    done
 
     # Close XML
     echo "</xri>" >> "$REPO_DIR/updates.xri"
@@ -287,7 +385,6 @@ main() {
 
     # Create directories
     mkdir -p "$PACKAGES_DIR" "$BUILD_DIR"
-    rm -f "$BUILD_DIR/packages.txt"
 
     # Determine what to build
     local target="${1:-all}"
@@ -325,11 +422,13 @@ main() {
     log "  ${BASE_URL}/"
     log ""
     log "Next steps:"
-    log "  1. git init && git add . && git commit -m 'Initial repository'"
-    log "  2. Create repo on GitHub: ${GITHUB_USER}/${GITHUB_REPO}"
-    log "  3. git remote add origin git@github.com:${GITHUB_USER}/${GITHUB_REPO}.git"
-    log "  4. git push -u origin main"
-    log "  5. Enable GitHub Pages (Settings > Pages > Source: main branch)"
+    log "  1. Review the diff: git diff --stat"
+    log "  2. git add packages updates.xri && git commit"
+    log "  3. git push origin main"
+    log ""
+    log "GitHub Pages serves the repository straight from main, so the update"
+    log "goes live a minute or so after the push. Verify with:"
+    log "  curl -s ${BASE_URL}/updates.xri | grep fileName"
     log ""
 }
 
