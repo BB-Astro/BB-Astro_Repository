@@ -4,11 +4,15 @@ Official PixInsight update repository for BB-Astro scripts.
 
 ## Available Scripts
 
-| Script | Version | Description |
-|--------|---------|-------------|
-| **LAcosmic** | 1.0.1 | Cosmic ray removal using L.A.Cosmic algorithm |
-| **DeepCosmicRay** | 2.1.1 | Deep learning cosmic ray removal (DeepCR) |
-| **CosmeticCorrection** | 2.1.0 | Hot/cold pixel removal |
+`updates.xri` is the authority on what is published. This table is a convenience copy.
+
+| Script | Description | Python |
+|--------|-------------|--------|
+| **LAcosmic** | Cosmic ray removal using the L.A.Cosmic algorithm | 3.10+ |
+| **DeepCosmicRay** | Deep learning cosmic ray removal (DeepCR) | 3.10 or 3.11 |
+| **CosmeticCorrection** | Hot/cold pixel removal | none |
+
+LAcosmic and DeepCosmicRay drive Python through a shell wrapper, so they are macOS and Linux only. CosmeticCorrection is pure PJSR.
 
 ---
 
@@ -36,20 +40,33 @@ Scripts are located in: **Script > BB-Astro**
 
 ---
 
-## Python Dependencies
+## Step 3: Python Setup
 
-**CosmeticCorrection** works immediately - no setup needed.
+**CosmeticCorrection** works immediately, no setup needed.
 
-**LAcosmic** and **DeepCosmicRay** require Python. The scripts will automatically detect if dependencies are missing and show you the exact command to run.
+**LAcosmic** and **DeepCosmicRay** each ship a setup script that builds a dedicated virtual environment under `~/.bb-astro`. Run the one you need once, from a Terminal:
 
-### If prompted for LAcosmic:
+```bash
+bash /Applications/PixInsight/src/scripts/BB-Astro/install_lacosmic.sh
+bash /Applications/PixInsight/src/scripts/BB-Astro/install_deepcr.sh
 ```
-pip3 install astroscrappy astropy numpy
+
+On Linux the path is `/opt/PixInsight/src/scripts/BB-Astro/` by default. Each script launched from PixInsight checks its environment before opening its dialog, and names the exact command if it is missing.
+
+Do **not** try `pip3 install ...` into your system Python: Homebrew and most Linux distributions mark their interpreter as externally managed (PEP 668) and refuse it.
+
+DeepCosmicRay additionally needs **Python 3.10 or 3.11**. `torch` requires 3.10 or later, while `deepcr` is published as a source distribution whose `setup.py` breaks on 3.12 and above. `install_deepcr.sh` finds a suitable interpreter, or tells you what to install:
+
+```bash
+brew install python@3.11                          # macOS
+sudo apt install python3.11 python3.11-venv       # Debian / Ubuntu
 ```
 
-### If prompted for DeepCosmicRay:
-```
-pip3 install deepcr torch xisf numpy astropy
+To check what would actually run:
+
+```bash
+bash /Applications/PixInsight/src/scripts/BB-Astro/run_deepcr.sh --probe
+bash /Applications/PixInsight/src/scripts/BB-Astro/run_lacosmic.sh --probe
 ```
 
 ---
