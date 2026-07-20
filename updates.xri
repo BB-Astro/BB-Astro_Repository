@@ -20,24 +20,24 @@
   </description>
 
   <!-- ================================================================== -->
-  <!-- BB-Astro LAcosmic v1.0.2 -->
+  <!-- BB-Astro LAcosmic v1.0.3 -->
   <!-- ================================================================== -->
 
   <platform os="macosx" arch="x64" version="1.8.0:2.0.0">
-    <package fileName="packages/BB_LAcosmic_v1.0.2.tar.gz" sha1="d04c5d1795cb88127d539f12e7fc08ac3ba5845e" type="script" releaseDate="20260720">
-      <title>BB-Astro LAcosmic v1.0.2</title>
+    <package fileName="packages/BB_LAcosmic_v1.0.3.tar.gz" sha1="95c0ce6fb6614246073a07e2ff40348836ddf67a" type="script" releaseDate="20260720">
+      <title>BB-Astro LAcosmic v1.0.3</title>
       <description>
-        <p><b>BB-Astro LAcosmic v1.0.2</b></p>
+        <p><b>BB-Astro LAcosmic v1.0.3</b></p>
         <p>Cosmic ray removal using the L.A.Cosmic algorithm (van Dokkum 2001). Optimized parameters detect +24% more cosmic rays than defaults. Requires Python 3 with astroscrappy.</p>
       </description>
     </package>
   </platform>
 
   <platform os="linux" arch="x64" version="1.8.0:2.0.0">
-    <package fileName="packages/BB_LAcosmic_v1.0.2.tar.gz" sha1="d04c5d1795cb88127d539f12e7fc08ac3ba5845e" type="script" releaseDate="20260720">
-      <title>BB-Astro LAcosmic v1.0.2</title>
+    <package fileName="packages/BB_LAcosmic_v1.0.3.tar.gz" sha1="95c0ce6fb6614246073a07e2ff40348836ddf67a" type="script" releaseDate="20260720">
+      <title>BB-Astro LAcosmic v1.0.3</title>
       <description>
-        <p><b>BB-Astro LAcosmic v1.0.2</b></p>
+        <p><b>BB-Astro LAcosmic v1.0.3</b></p>
         <p>Cosmic ray removal using the L.A.Cosmic algorithm (van Dokkum 2001). Optimized parameters detect +24% more cosmic rays than defaults. Requires Python 3 with astroscrappy.</p>
       </description>
     </package>
